@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PT. Berlian Tama Sejahtra</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --blue: #0099CC;
+      --blue-dark: #007aa3;
+      --blue-deep: #003d52;
+      --yellow: #F5C518;
+      --black: #1d1d1f;
+      --gray: #6e6e73;
+      --light: #f5f5f7;
+      --white: #ffffff;
+      --border: #d2d2d7;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+      color: var(--black); background: var(--white);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      height: 56px;
+      background: rgba(0,0,0,0.35);
+      backdrop-filter: saturate(180%) blur(20px);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      display: flex; align-items: center;
+      transition: background 0.4s;
+    }
+    nav.scrolled {
+      background: rgba(255,255,255,0.92);
+      border-bottom-color: rgba(0,0,0,0.08);
+    }
+    nav.scrolled .nav-back { color: var(--blue); }
+    nav.scrolled .nav-title { color: var(--black); }
+    nav.scrolled .nav-links a { color: var(--gray); }
+    .nav-inner {
+      width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 40px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-back {
+      font-size: 0.8rem; color: rgba(255,255,255,0.8);
+      text-decoration: none; display: flex; align-items: center; gap: 6px;
+      transition: color 0.2s;
+    }
+    .nav-back:hover { color: var(--yellow); }
+    .nav-title {
+      font-size: 0.82rem; font-weight: 600; color: rgba(255,255,255,0.9);
+      letter-spacing: -0.2px; transition: color 0.4s;
+    }
+    .nav-links { display: flex; list-style: none; }
+    .nav-links a {
+      font-size: 0.78rem; color: rgba(255,255,255,0.7); text-decoration: none;
+      padding: 6px 14px; border-radius: 100px; transition: all 0.2s;
+    }
+    .nav-links a:hover { color: #fff; background: rgba(255,255,255,0.12); }
+    nav.scrolled .nav-links a:hover { color: var(--black); background: rgba(0,0,0,0.05); }
+
+    /* ── HERO ── */
+    .hero {
+      height: 100vh;
+      position: relative;
+      display: flex; align-items: flex-end;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background-image: url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1920&q=80&fit=crop');
+      background-color: var(--blue-deep);
+      background-size: cover; background-position: center;
+      transform: scale(1.04);
+      transition: transform 6s ease;
+    }
+    .hero-bg.loaded { transform: scale(1); }
+    .hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(
+        to top,
+        rgba(0,20,40,0.92) 0%,
+        rgba(0,30,60,0.55) 50%,
+        rgba(0,40,70,0.2) 100%
+      );
+    }
+    .hero-content {
+      position: relative; z-index: 2;
+      max-width: 1200px; margin: 0 auto; padding: 0 40px 80px;
+      width: 100%;
+    }
+    .hero-eyebrow {
+      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--yellow);
+      display: flex; align-items: center; gap: 14px; margin-bottom: 20px;
+    }
+    .hero-eyebrow::before {
+      content: ''; display: block; width: 32px; height: 2px; background: var(--yellow);
+    }
+    .hero h1 {
+      font-size: clamp(40px, 7vw, 88px);
+      font-weight: 700; letter-spacing: -3px; line-height: 1.02;
+      color: #fff; margin-bottom: 24px;
+    }
+    .hero-sub {
+      font-size: clamp(16px, 1.8vw, 20px); color: rgba(255,255,255,0.65);
+      line-height: 1.6; max-width: 480px; margin-bottom: 44px;
+    }
+    .hero-cta {
+      display: inline-flex; align-items: center; gap: 12px;
+      font-size: 0.9rem; font-weight: 600; color: #fff;
+      text-decoration: none; padding: 14px 28px; border-radius: 100px;
+      background: var(--blue); transition: all 0.25s;
+    }
+    .hero-cta:hover { background: var(--blue-dark); transform: translateY(-2px); }
+    .hero-scroll {
+      position: absolute; bottom: 36px; right: 40px;
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      color: rgba(255,255,255,0.35); font-size: 0.65rem;
+      letter-spacing: 0.12em; text-transform: uppercase;
+    }
+    .hero-scroll-line {
+      width: 1px; height: 40px;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.4), transparent);
+    }
+
+    /* ── SECTION BASE ── */
+    .section { padding: 120px 40px; }
+    .section.dark { background: var(--black); color: #fff; }
+    .section.alt { background: var(--light); }
+    .section-inner { max-width: 1200px; margin: 0 auto; }
+
+    /* ── FULL-WIDTH IMAGE ── */
+    .full-img {
+      width: 100%; height: 560px;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+    }
+
+    /* ── ABOUT ── */
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 100px; align-items: center; }
+    .about-label {
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--blue); margin-bottom: 16px; display: block;
+    }
+    .about-h {
+      font-size: clamp(30px, 4vw, 52px); font-weight: 700;
+      letter-spacing: -1.5px; line-height: 1.08; color: var(--black); margin-bottom: 24px;
+    }
+    .about-body { font-size: 1rem; color: var(--gray); line-height: 1.8; }
+    .about-body + .about-body { margin-top: 16px; }
+    .yellow-bar { width: 40px; height: 3px; background: var(--yellow); border-radius: 2px; margin-bottom: 20px; }
+    .about-img {
+      width: 100%; aspect-ratio: 4/3; object-fit: cover;
+      border-radius: 20px;
+    }
+
+    /* ── PILLARS ── */
+    .pillars { margin-top: 40px; border-top: 1px solid var(--border); }
+    .pillar {
+      display: flex; gap: 24px; padding: 22px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .pn { font-size: 0.68rem; font-weight: 700; color: var(--blue); width: 24px; flex-shrink: 0; padding-top: 3px; }
+    .pillar strong { display: block; font-size: 0.95rem; font-weight: 600; color: var(--black); margin-bottom: 4px; }
+    .pillar span { font-size: 0.84rem; color: var(--gray); line-height: 1.6; }
+
+    /* ── STATS ── */
+    .stats-row {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      border: 1px solid rgba(255,255,255,0.1); border-radius: 20px;
+      overflow: hidden; margin-bottom: 80px;
+    }
+    .stat-cell { padding: 36px 28px; border-right: 1px solid rgba(255,255,255,0.08); text-align: left; }
+    .stat-cell:last-child { border-right: none; }
+    .stat-num { font-size: 2.4rem; font-weight: 700; letter-spacing: -1.5px; color: var(--yellow); margin-bottom: 6px; }
+    .stat-label { font-size: 0.8rem; color: rgba(255,255,255,0.5); }
+
+    /* ── SERVICES ── */
+    .svc-headline {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 80px;
+      align-items: end; margin-bottom: 64px;
+    }
+    .svc-h {
+      font-size: clamp(28px, 4vw, 48px); font-weight: 700;
+      letter-spacing: -1.5px; line-height: 1.08; color: var(--black);
+    }
+    .svc-desc { font-size: 1rem; color: var(--gray); line-height: 1.75; padding-bottom: 4px; }
+    .svc-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 2px; }
+    .svc-card {
+      padding: 48px 40px; background: var(--light);
+      transition: background 0.3s;
+    }
+    .svc-card:hover { background: #ebebed; }
+    .svc-num { font-size: 0.7rem; font-weight: 700; color: var(--blue); letter-spacing: 0.1em; margin-bottom: 40px; display: block; }
+    .svc-card h3 { font-size: 1.15rem; font-weight: 700; color: var(--black); letter-spacing: -0.3px; margin-bottom: 14px; line-height: 1.3; }
+    .svc-card p { font-size: 0.875rem; color: var(--gray); line-height: 1.7; }
+
+    /* ── VISION MISSION ── */
+    .vm-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+    .vm-box { padding: 72px 56px; }
+    .vm-box.v { background: var(--blue); }
+    .vm-box.m { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); }
+    .vm-tag { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; display: block; margin-bottom: 20px; color: rgba(255,255,255,0.55); }
+    .vm-box h3 { font-size: clamp(22px, 3vw, 36px); font-weight: 700; letter-spacing: -1px; color: #fff; margin-bottom: 20px; line-height: 1.2; }
+    .vm-box p { font-size: 0.95rem; color: rgba(255,255,255,0.7); line-height: 1.8; }
+    .vm-box ul { padding-left: 0; list-style: none; }
+    .vm-box li { font-size: 0.92rem; color: rgba(255,255,255,0.7); line-height: 1.6; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.07); display: flex; gap: 14px; }
+    .vm-box li::before { content: '—'; color: var(--yellow); flex-shrink: 0; }
+
+    /* ── CONTACT ── */
+    .contact-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 100px; }
+    .contact-left-h { font-size: clamp(30px, 4vw, 52px); font-weight: 700; letter-spacing: -2px; color: #fff; margin-bottom: 16px; line-height: 1.05; }
+    .contact-left-p { font-size: 1rem; color: rgba(255,255,255,0.5); line-height: 1.75; margin-bottom: 48px; }
+    .cinfo-list { display: flex; flex-direction: column; }
+    .cinfo { display: flex; padding: 18px 0; border-bottom: 1px solid rgba(255,255,255,0.07); }
+    .cinfo:first-child { border-top: 1px solid rgba(255,255,255,0.07); }
+    .ci-l { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.3); width: 130px; flex-shrink: 0; padding-top: 3px; }
+    .ci-v { font-size: 0.92rem; color: rgba(255,255,255,0.85); line-height: 1.6; }
+    .contact-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 24px; padding: 48px; align-self: start; }
+    .contact-card h3 { font-size: 1.4rem; font-weight: 700; color: #fff; letter-spacing: -0.5px; margin-bottom: 10px; }
+    .contact-card p { font-size: 0.88rem; color: rgba(255,255,255,0.45); line-height: 1.65; margin-bottom: 32px; }
+    .cta-stack { display: flex; flex-direction: column; gap: 10px; }
+    .cta-btn { display: flex; align-items: center; justify-content: center; gap: 9px; width: 100%; padding: 14px; border-radius: 100px; font-size: 0.88rem; font-weight: 600; text-decoration: none; transition: all 0.2s; }
+    .cta-wa { background: #34C759; color: #fff; }
+    .cta-wa:hover { background: #2db34a; }
+    .cta-mail { background: var(--blue); color: #fff; }
+    .cta-mail:hover { background: var(--blue-dark); }
+
+    /* ── FOOTER ── */
+    footer { background: #000; padding: 28px 40px; display: flex; align-items: center; justify-content: space-between; }
+    footer p, footer a { font-size: 0.75rem; color: rgba(255,255,255,0.25); text-decoration: none; }
+    footer a:hover { color: var(--blue); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 960px) {
+      .about-grid, .vm-wrap, .contact-wrap, .svc-headline { grid-template-columns: 1fr; gap: 40px; }
+      .svc-grid { grid-template-columns: 1fr; }
+      .stats-row { grid-template-columns: 1fr 1fr; }
+      .stat-cell:nth-child(2) { border-right: none; }
+      .stat-cell:nth-child(3), .stat-cell:nth-child(4) { border-top: 1px solid rgba(255,255,255,0.08); }
+      .nav-links { display: none; }
+      .vm-box { padding: 48px 32px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav id="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-back">← TMS Group</a>
+    <span class="nav-title">PT. Berlian Tama Sejahtra</span>
+    <ul class="nav-links">
+      <li><a href="#about">Tentang</a></li>
+      <li><a href="#services">Layanan</a></li>
+      <li><a href="#visi">Visi & Misi</a></li>
+      <li><a href="#contact">Kontak</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg" id="heroBg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">Company Profile 2026</div>
+    <h1>PT. Berlian<br/>Tama Sejahtra</h1>
+    <p class="hero-sub">ICT Solution Provider & Geographic Information Systems Specialist untuk Indonesia.</p>
+    <a href="#about" class="hero-cta">Eksplorasi ↓</a>
+  </div>
+  <div class="hero-scroll">
+    <div class="hero-scroll-line"></div>
+    Scroll
+  </div>
+</div>
+
+<!-- FULL IMAGE — tower/telecom -->
+<img class="full-img"
+  src="images%20berlian%20tama%20sejahtera/COMPANY%20PROFILE%20PT.%20BERLIAN%20TAMA%20SEJAHTRA_page-0001.jpg"
+  alt="Berlian Tama Sejahtra"
+  style="object-position: 0% 85%; height: 440px;" />
+
+<!-- ABOUT -->
+<div class="section" id="about">
+  <div class="section-inner">
+    <div class="about-grid">
+      <div>
+        <div class="yellow-bar"></div>
+        <span class="about-label">Tentang Kami</span>
+        <h2 class="about-h">Penyedia Solusi ICT & GIS Terpercaya</h2>
+        <p class="about-body">PT. Berlian Tama Sejahtra adalah penyedia solusi dan instalasi perangkat lunak di bidang sistem informasi geografis. Kami fokus melayani sektor Utilities, Telekomunikasi, Transportasi, Administrasi Publik, dan Industri di seluruh Indonesia.</p>
+        <p class="about-body">Dengan tim konsultan berpengalaman, kami menghadirkan solusi yang tepat, efisien, dan terukur — dari perencanaan awal hingga implementasi penuh.</p>
+        <div class="pillars">
+          <div class="pillar"><span class="pn">01</span><div><strong>Geographic Information Systems</strong><span>Implementasi solusi GIS komprehensif untuk berbagai sektor industri strategis di Indonesia.</span></div></div>
+          <div class="pillar"><span class="pn">02</span><div><strong>Infrastruktur Telekomunikasi</strong><span>Perencanaan, instalasi, dan pemeliharaan jaringan fiber optik dan menara BTS.</span></div></div>
+          <div class="pillar"><span class="pn">03</span><div><strong>Manajemen Proyek</strong><span>Pengelolaan proyek dari perencanaan teknis hingga serah terima akhir tepat waktu.</span></div></div>
+        </div>
+      </div>
+      <div>
+        <img class="about-img"
+          src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=900&q=85&fit=crop"
+          alt="Tim Profesional BTS" />
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<div class="section alt" id="services" style="padding: 100px 0;">
+  <div class="section-inner" style="max-width:100%; padding: 0;">
+    <div style="max-width:1200px; margin: 0 auto; padding: 0 40px 64px;">
+      <div class="svc-headline">
+        <div>
+          <div class="yellow-bar"></div>
+          <span class="about-label">Layanan Kami</span>
+          <h2 class="svc-h">Solusi Lengkap<br/>untuk Bisnis Anda</h2>
+        </div>
+        <p class="svc-desc">Dari konsultasi strategis hingga konstruksi infrastruktur telekomunikasi skala nasional — kami hadirkan layanan end-to-end yang terukur dan terpercaya.</p>
+      </div>
+    </div>
+    <div class="svc-grid">
+      <div class="svc-card">
+        <span class="svc-num">01</span>
+        <h3>Consulting Services</h3>
+        <p>Konsultan profesional kami mendukung implementasi dan ekspansi solusi ICT Anda — dari analisis kebutuhan awal hingga pengawasan operasional sistem berjalan.</p>
+      </div>
+      <div class="svc-card">
+        <span class="svc-num">02</span>
+        <h3>Telecommunication Construction & Installation</h3>
+        <p>Instalasi jaringan fiber optik, tower BTS, dan infrastruktur telekomunikasi sesuai spesifikasi teknis dan jadwal yang telah disepakati bersama klien.</p>
+      </div>
+      <div class="svc-card">
+        <span class="svc-num">03</span>
+        <h3>Project Planning & Contract Administration</h3>
+        <p>Penyusunan spesifikasi teknis, manajemen sumber daya, penjadwalan aktivitas, dan administrasi kontrak proyek telekomunikasi skala besar.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- VISION MISSION -->
+<div class="section dark" id="visi" style="padding: 0;">
+  <div class="vm-wrap">
+    <div class="vm-box v">
+      <span class="vm-tag">Visi</span>
+      <h3>Indonesia's Most Preferred ICT Provider</h3>
+      <p>Menjadi penyedia layanan teknologi informasi dan komunikasi paling disukai di Indonesia dengan standar kelas dunia dan kinerja terbaik — dipercaya lintas sektor publik dan swasta.</p>
+    </div>
+    <div class="vm-box m">
+      <span class="vm-tag">Misi</span>
+      <h3>Komitmen Kami</h3>
+      <ul>
+        <li>Mengantisipasi, memahami, dan memenuhi kebutuhan telekomunikasi pelanggan</li>
+        <li>Mengembangkan solusi inovatif yang meningkatkan kualitas kerja</li>
+        <li>Memberikan konsultasi profesional yang mendukung implementasi sukses</li>
+        <li>Membangun kemitraan jangka panjang yang saling menguntungkan</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- CONTACT -->
+<div class="section dark" id="contact">
+  <div class="section-inner">
+    <div class="contact-wrap">
+      <div>
+        <div class="yellow-bar"></div>
+        <span class="about-label" style="color:rgba(255,255,255,0.4);">Hubungi Kami</span>
+        <h2 class="contact-left-h">Mulai Diskusi<br/>Hari Ini</h2>
+        <p class="contact-left-p">Tim profesional kami siap membantu kebutuhan ICT perusahaan Anda dan merespons dalam waktu singkat.</p>
+        <div class="cinfo-list">
+          <div class="cinfo"><span class="ci-l">Contact Person</span><span class="ci-v">Wahyu Hidayat</span></div>
+          <div class="cinfo"><span class="ci-l">Telepon / WA</span><span class="ci-v">+62 856 9150 1222</span></div>
+          <div class="cinfo"><span class="ci-l">Email</span><span class="ci-v">berliantamasejahtra@gmail.com</span></div>
+          <div class="cinfo"><span class="ci-l">Alamat</span><span class="ci-v">Ruko Golden Madrid Block D No.26 Room 1777, Jl. Letnan Sutopo BSD City, Serpong, Tangerang Selatan</span></div>
+        </div>
+      </div>
+      <div class="contact-card">
+        <h3>Kirim Pesan</h3>
+        <p>Hubungi langsung melalui WhatsApp atau email untuk konsultasi dengan tim kami.</p>
+        <div class="cta-stack">
+          <a href="https://wa.me/6285691501222" class="cta-btn cta-wa" target="_blank">💬 Chat via WhatsApp</a>
+          <a href="mailto:berliantamasejahtra@gmail.com" class="cta-btn cta-mail">✉️ Kirim Email</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>© 2026 PT. Berlian Tama Sejahtra. All rights reserved.</p>
+  <a href="index.html">← Kembali ke TMS Group</a>
+</footer>
+
+<script>
+  // Nav scroll effect
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 80);
+  });
+  // Hero bg zoom on load
+  setTimeout(() => document.getElementById('heroBg').classList.add('loaded'), 100);
+</script>
+</body>
+</html>

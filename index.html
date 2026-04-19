@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TMS Group</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      height: 100%;
+      overflow: hidden;
+      font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── HEADER ── */
+    .site-header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 28px 40px;
+      pointer-events: none;
+    }
+
+    .site-brand {
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.9);
+      text-shadow: 0 1px 8px rgba(0,0,0,0.4);
+    }
+
+    /* ── PANELS WRAPPER ── */
+    .panels {
+      display: flex;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    /* ── SINGLE PANEL ── */
+    .panel {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+      text-decoration: none;
+      cursor: pointer;
+      transition: flex 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .panel:hover { flex: 1.5; }
+
+    /* background image */
+    .panel-bg {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .panel:hover .panel-bg { transform: scale(1.06); }
+
+    /* gradient overlay */
+    .panel-overlay {
+      position: absolute;
+      inset: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    /* vertical separator */
+    .panel:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      top: 0; right: 0; bottom: 0;
+      width: 1px;
+      background: rgba(255,255,255,0.15);
+      z-index: 5;
+    }
+
+    /* content */
+    .panel-content {
+      position: relative;
+      z-index: 10;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: flex-end;
+      padding: 52px 44px;
+      color: #fff;
+    }
+
+    .panel-number {
+      position: absolute;
+      top: 44px;
+      left: 44px;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.45);
+    }
+
+    .panel-sector {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+      opacity: 0.75;
+    }
+
+    .panel-name {
+      font-size: clamp(22px, 2.8vw, 36px);
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      line-height: 1.12;
+      margin-bottom: 12px;
+    }
+
+    .panel-tagline {
+      font-size: 0.88rem;
+      line-height: 1.6;
+      opacity: 0.7;
+      max-width: 240px;
+      margin-bottom: 32px;
+    }
+
+    .panel-enter {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      color: #fff;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+
+    .panel-enter-line {
+      display: block;
+      width: 32px;
+      height: 1.5px;
+      background: #fff;
+      transition: width 0.3s ease;
+    }
+
+    .panel:hover .panel-enter { opacity: 1; transform: translateY(0); }
+    .panel:hover .panel-enter-line { width: 48px; }
+
+    /* ── PANEL 1 — BTS ── */
+    .panel.bts .panel-bg {
+      background-image:
+        url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1920&q=80&fit=crop');
+      background-color: #003a52;
+    }
+    .panel.bts .panel-overlay {
+      background: linear-gradient(
+        165deg,
+        rgba(0, 50, 80, 0.45) 0%,
+        rgba(0, 30, 60, 0.82) 100%
+      );
+    }
+    .panel.bts .panel-sector { color: #7dd3f0; }
+    .panel.bts .accent-line {
+      width: 36px; height: 3px;
+      background: #0099CC;
+      border-radius: 2px;
+      margin-bottom: 18px;
+    }
+
+    /* ── PANEL 2 — TIRTA MANDIRI ── */
+    .panel.mandiri .panel-bg {
+      background-image:
+        url('https://images.unsplash.com/photo-1497366216548-37526070297c?w=1920&q=80&fit=crop');
+      background-color: #3a0008;
+    }
+    .panel.mandiri .panel-overlay {
+      background: linear-gradient(
+        165deg,
+        rgba(100, 0, 20, 0.45) 0%,
+        rgba(60, 0, 10, 0.85) 100%
+      );
+    }
+    .panel.mandiri .panel-sector { color: #f5a0a0; }
+    .panel.mandiri .accent-line {
+      width: 36px; height: 3px;
+      background: #C8102E;
+      border-radius: 2px;
+      margin-bottom: 18px;
+    }
+
+    /* ── PANEL 3 — TIRTA MAJU ── */
+    .panel.maju .panel-bg {
+      background-image:
+        url('https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1920&q=80&fit=crop');
+      background-color: #002840;
+    }
+    .panel.maju .panel-overlay {
+      background: linear-gradient(
+        165deg,
+        rgba(0, 60, 90, 0.45) 0%,
+        rgba(0, 30, 55, 0.85) 100%
+      );
+    }
+    .panel.maju .panel-sector { color: #7de8f5; }
+    .panel.maju .accent-line {
+      width: 36px; height: 3px;
+      background: #00AEEF;
+      border-radius: 2px;
+      margin-bottom: 18px;
+    }
+
+    /* ── FOOTER ── */
+    .site-footer {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px 40px;
+      pointer-events: none;
+    }
+
+    .site-footer p {
+      font-size: 0.68rem;
+      color: rgba(255,255,255,0.3);
+      letter-spacing: 0.06em;
+    }
+
+    /* ── MOBILE: tumpuk vertikal, no scroll ── */
+    @media (max-width: 768px) {
+      /* Header jadi navbar solid */
+      .site-header {
+        height: 48px;
+        padding: 0 20px;
+        background: #011826;
+        backdrop-filter: none;
+        justify-content: center;
+        pointer-events: auto;
+      }
+
+      .site-brand { font-size: 0.72rem; }
+
+      /* Panels mulai tepat di bawah navbar */
+      .panels {
+        flex-direction: column;
+        height: calc(100vh - 48px);
+        width: 100vw;
+        margin-top: 48px;
+      }
+
+      .panel {
+        flex: 1 !important;
+        width: 100%;
+        transition: none;
+      }
+
+      .panel:hover { flex: 1 !important; }
+
+      /* Separator jadi garis horizontal */
+      .panel:not(:last-child)::after {
+        top: auto;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 1px;
+      }
+
+      .panel-content {
+        align-items: center;
+        text-align: center;
+        padding: 16px 24px;
+        justify-content: center;
+      }
+
+      .panel-number { display: none; }
+      .panel-tagline { display: none; }
+
+      .panel-enter {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .panel-enter-line { display: none; }
+
+      .panel-name { font-size: clamp(18px, 5vw, 24px); margin-bottom: 8px; }
+      .panel-sector { margin-bottom: 6px; }
+
+      /* Footer tetap fixed di bawah */
+      .site-footer { padding: 10px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <span class="site-brand">TMS Group of Companies</span>
+  </header>
+
+  <div class="panels">
+
+    <!-- BTS -->
+    <a class="panel bts" href="berlian.html">
+      <div class="panel-bg"></div>
+      <div class="panel-overlay"></div>
+      <div class="panel-content">
+        <span class="panel-number">01</span>
+        <div class="accent-line"></div>
+        <div class="panel-sector">ICT & Telekomunikasi</div>
+        <h2 class="panel-name">PT. Berlian<br/>Tama Sejahtra</h2>
+        <p class="panel-tagline">ICT Solution Provider & Geographic Information Systems Specialist</p>
+        <span class="panel-enter">
+          <span class="panel-enter-line"></span>
+          Lihat Profil
+        </span>
+      </div>
+    </a>
+
+    <!-- TIRTA MANDIRI -->
+    <a class="panel mandiri" href="tirta-mandiri.html">
+      <div class="panel-bg"></div>
+      <div class="panel-overlay"></div>
+      <div class="panel-content">
+        <span class="panel-number">02</span>
+        <div class="accent-line"></div>
+        <div class="panel-sector">Outsourcing & Manpower</div>
+        <h2 class="panel-name">PT. Tirta Mandiri<br/>Sejahtra</h2>
+        <p class="panel-tagline">Professional Outsourcing & Manpower Solutions untuk berbagai industri</p>
+        <span class="panel-enter">
+          <span class="panel-enter-line"></span>
+          Lihat Profil
+        </span>
+      </div>
+    </a>
+
+    <!-- TIRTA MAJU -->
+    <a class="panel maju" href="tms.html">
+      <div class="panel-bg"></div>
+      <div class="panel-overlay"></div>
+      <div class="panel-content">
+        <span class="panel-number">03</span>
+        <div class="accent-line"></div>
+        <div class="panel-sector">Logistik & Kargo</div>
+        <h2 class="panel-name">PT. Tirta Maju<br/>Sejahtra</h2>
+        <p class="panel-tagline">Domestic Logistics & Cargo Solutions dengan 25 unit truk & 8 agen</p>
+        <span class="panel-enter">
+          <span class="panel-enter-line"></span>
+          Lihat Profil
+        </span>
+      </div>
+    </a>
+
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 TMS Group — BSD City, Tangerang Selatan</p>
+  </footer>
+
+</body>
+</html>
